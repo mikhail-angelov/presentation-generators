@@ -1,0 +1,300 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/white.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h3>@Mikhail.Angelov</h3>
+                    <div>
+                      
+                      <span class="logo"><img id='tt' src="tt.png"/></span>
+                    </div>
+                    <div>
+                    <span class="logo">Ѣ</span>
+                    </div>
+                </section>
+                <section>
+                    <h1 class='riot-h1'><span class='riot'>Riot.js</span></h1>
+                    <p>Обзор еще одного UI фраймворка</p>
+                </section>
+                <section class='second'>
+                    
+                    <p class="quote">— У нас, когда долго бежишь, непременно попадаешь в другое место.</p>
+                    <p class="quote">— Ну, а здесь, знаешь ли, приходится бежать со всех ног, чтобы только остаться на том же месте, а чтобы попасть в другое место, нужно бежать вдвое быстрее.</p>
+
+                    <div class="quote-author">Алиса и Королева обсуждают Java-Script стек</div>
+                    <img id="rabbit" src="rabbit.gif">
+                </section>
+   <!--              <section class='second' data-background="compare.png">
+                    <p ></p>
+
+                </section> -->
+                <section class='second'>
+                    <img id="clear-vm" src='compare-1.png'>
+                    <p ></p>
+
+                </section>
+                
+                <section data-state="customevent">
+					<span>
+						Компонент
+					</span>
+					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 17px; line-height: 100%;">
+&lt;todo&gt;
+
+  &lt;h3&gt;{ opts.title }&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li each={ item, i in items }&gt;{ item }&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;form onsubmit={ add }&gt;
+    &lt;input ref=&quot;input&quot;&gt;
+    &lt;button&gt;Add #{ items.length + 1 }&lt;/button&gt;
+  &lt;/form&gt;
+
+  &lt;style&gt;
+    h3 {
+      font-size: 14px;
+    }
+  &lt;/style&gt;
+
+  &lt;script&gt;
+    this.items = []
+
+    add(e) {
+      e.preventDefault()
+      var input = this.refs.input
+      this.items.push(input.value)
+      input.value = ''
+    }
+  &lt;/script&gt;
+
+&lt;/todo&gt;
+						</code></pre>
+
+				</section>
+        <section class='second'>
+                    
+                    <p ><img id="clear-dvm" src='dom-view-model.png'></p>
+
+        </section>
+
+				<section data-state="customevent">
+					<p>
+						Скомпилированный компонент
+					</p>
+					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 25px; line-height: 100%;">
+riot.tag2('todo', 
+'&lt;h3&gt;{opts.title}&lt;/h3&gt; 
+&lt;ul&gt; &lt;li each=&quot;{item, i in items}&quot;&gt;{item}&lt;/li&gt; &lt;/ul&gt; 
+&lt;form onsubmit=&quot;{add}&quot;&gt; &lt;input ref=&quot;input&quot;&gt; 
+&lt;button&gt;Add #{items.length + 1}&lt;/button&gt; &lt;/form&gt;', 
+'todo h3,[data-is=&quot;todo&quot;] h3{ font-size: 14px; }', 
+'', 
+function(opts) {
+    this.items = []
+
+    this.add = function(e) {
+      e.preventDefault()
+      var input = this.refs.input
+      this.items.push(input.value)
+      input.value = ''
+    }.bind(this)
+});
+						</code></pre>
+
+				</section>
+								</section>
+				    <section data-state="customevent">
+					<p>
+						Монтирование тега
+					</p>
+					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 25px; line-height: 100%;">
+//somewhere in index.html
+
+&lt;todo&gt;&lt;/todo&gt;
+
+&lt;script&gt;riot.mount('todo')&lt;/script&gt;
+						</code></pre>
+
+				</section>
+				<section data-state="customevent">
+					<p>
+						События жизненного цикла компонента
+					</p>
+					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 17px; line-height: 100%;">
+&lt;todo&gt;
+
+  this.on('before-mount', function() {
+    // before the tag is mounted
+  })
+
+  this.on('mount', function() {
+    // right after the tag is mounted on the page
+  })
+
+  this.on('update', function() {
+    // allows recalculation of context data before the update
+  })
+
+  this.on('updated', function() {
+    // right after the tag template is updated after an update call
+  })
+
+  this.on('before-unmount', function() {
+    // before the tag is removed
+  })
+
+  this.on('unmount', function() {
+    // when the tag is removed from the page
+  })
+
+  // curious about all events ?
+  this.on('*', function(eventName) {
+    console.info(eventName)
+  })
+
+&lt;/todo&gt;
+						</code></pre>
+
+				</section>
+				<section data-state="customevent">
+					<p>
+						Обновление компонента
+					</p>
+					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 17px; line-height: 100%;">
+this.update()
+						</code></pre>
+
+				</section>
+				<section data-state="customevent">
+					<p>
+						Свойства компонента
+					</p>
+					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 17px; line-height: 100%;">
+&lt;script&gt;
+riot.mount('my-tag', { title: 'My TODO app', items: [ ... ] })
+&lt;/script&gt;
+
+//------------
+
+&lt;my-tag&gt;
+
+  &lt;!-- Options in HTML --&gt;
+  &lt;h3&gt;{ opts.title }&lt;/h3&gt;
+
+  // Options in JavaScript
+  var title = opts.title
+
+&lt;/my-tag&gt;
+						</code></pre>
+
+				</section>
+				<section data-state="customevent">
+					<p>
+						Html директивы
+					</p>
+          <br />
+          <br />
+          <ul>
+          <li>if</li>
+          <li>show/hide</li>
+          <li>each</li>
+          </ul>
+	
+
+				</section>
+        <section data-state="customevent">
+          <p>
+            Сборка
+          </p>
+          <br />
+          <br />
+          <ul>
+          <li>In-browser compilation</li>
+          <li>Pre-compilation</li>
+          </ul>
+
+
+        </section>
+				<section data-state="customevent">
+					<p>
+						Пример класса для роутера
+					</p>
+					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 15px; line-height: 100%;">
+class Router{
+  constructor(mainSelector){
+    this.routes = [];
+    window.addEventListener("hashchange", () => {
+      this.routes.forEach(route=>{
+        if(location.hash.indexOf(route.hash)>=0){
+          riot.mount(mainSelector, route.tag)
+        }
+      })
+    })
+  }
+
+  go(hash){
+    location.hash = hash
+  }
+
+  register(route){
+    this.routes.push(route)
+  }
+}
+						</code></pre>
+
+				</section>
+        <section data-state="customevent">
+					<p>
+						Пример SPA приложения на Riot.js.
+					</p>
+
+
+				</section>
+        
+        <section data-state="customevent">
+
+          <img height="100%" style="margin-top: -52px;" src="alice.png"/>
+
+        </section>
+
+        <section data-state="customevent">
+          <p>
+            Спасибо за внимание!
+          </p>
+
+
+        </section>
+            </div>
+        </div>
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+        <script>
+            Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				],
+				width: 1000,
+			    height: 600,
+
+			    // Factor of the display size that should remain empty around the content
+			    margin: 0.1,
+
+			    // Bounds for smallest/largest possible scale to apply to content
+			    minScale: 1.0,
+			    maxScale: 1.5
+			});
+        </script>
+    </body>
+</html>
