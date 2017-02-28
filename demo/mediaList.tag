@@ -4,7 +4,7 @@
     <img class='image' src={item.img}/>
     <div class='column'>{item.name}</div>
     <div class='column'>{item.album}</div>
-    <div class='column control'><button onclick={play(item)}> {item.played ? '⏸' : '️️▶️' } </button></div>
+    <div class='column control'><button onclick={play(item)}> {item.played ? '⏸' : '️▶️' } </button></div>
 </div>
 
 <script>
