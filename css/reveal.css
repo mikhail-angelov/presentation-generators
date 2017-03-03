@@ -161,14 +161,15 @@ html:-moz-full-screen-ancestor {
 
 .reveal .slides section .fragment.highlight-red.visible {
   color: #ff2c2d;
-  font-size: 40px; }
+  font-size: 20px; }
 
 .reveal .slides section .fragment.highlight-green.visible {
   color: #17ff2e;
-  font-size: 40px; }
+  font-size: 20px; }
 
 .reveal .slides section .fragment.highlight-blue.visible {
-  color: #1b91ff; }
+  color: #1b91ff; 
+  font-size: 20px;}
 
 .reveal .slides section .fragment.highlight-current-red.current-fragment {
   color: #ff2c2d; }

@@ -2,6 +2,8 @@
     <head>
         <link rel="stylesheet" href="css/reveal.css">
         <link rel="stylesheet" href="css/theme/white.css">
+            <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
     </head>
     <body>
         <div class="reveal">
@@ -39,12 +41,10 @@
                 </section>
                 
                 <section data-state="customevent">
-					<span>
-						Компонент
-					</span>
-					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 17px; line-height: 100%;">
-&lt;todo&gt;
 
+					<pre style="font-size: 14px;">
+&lt;todo&gt;
+<div class="fragment highlight-green">
   &lt;h3&gt;{ opts.title }&lt;/h3&gt;
 
   &lt;ul&gt;
@@ -55,13 +55,15 @@
     &lt;input ref=&quot;input&quot;&gt;
     &lt;button&gt;Add #{ items.length + 1 }&lt;/button&gt;
   &lt;/form&gt;
-
+</div>
+<div class="fragment highlight-blue">
   &lt;style&gt;
     h3 {
       font-size: 14px;
     }
   &lt;/style&gt;
-
+</div>
+<div class="fragment highlight-red">
   &lt;script&gt;
     this.items = []
 
@@ -72,9 +74,9 @@
       input.value = ''
     }
   &lt;/script&gt;
-
+</div>
 &lt;/todo&gt;
-						</code></pre>
+						</pre>
 
 				</section>
         <section class='second'>
@@ -84,17 +86,18 @@
         </section>
 
 				<section data-state="customevent">
-					<p>
-						Скомпилированный компонент
-					</p>
+
 					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 25px; line-height: 100%;">
 riot.tag2('todo', 
+
 '&lt;h3&gt;{opts.title}&lt;/h3&gt; 
 &lt;ul&gt; &lt;li each=&quot;{item, i in items}&quot;&gt;{item}&lt;/li&gt; &lt;/ul&gt; 
 &lt;form onsubmit=&quot;{add}&quot;&gt; &lt;input ref=&quot;input&quot;&gt; 
 &lt;button&gt;Add #{items.length + 1}&lt;/button&gt; &lt;/form&gt;', 
+
 'todo h3,[data-is=&quot;todo&quot;] h3{ font-size: 14px; }', 
 '', 
+
 function(opts) {
     this.items = []
 
