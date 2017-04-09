@@ -1,309 +1,95 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="css/reveal.css">
-        <link rel="stylesheet" href="css/theme/white.css">
-            <!-- Theme used for syntax highlighting of code -->
-        <link rel="stylesheet" href="lib/css/zenburn.css">
-    </head>
-    <body>
-        <div class="reveal">
-            <div class="slides">
-                <section>
-                    <h3>@Mikhail.Angelov</h3>
-                    <div>
-                      
-                      <span class="logo"><img id='tt' src="tt.png"/></span>
-                    </div>
-                    <div>
+
+<head>
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h3>@Mikhail.Angelov</h3>
+                <div>
+
+                    <span class="logo"><img id='tt' src="tt.png"/></span>
+                </div>
+                <div>
                     <span class="logo">Ѣ</span>
-                    </div>
-                </section>
-                <section>
-                    <a href="http://riotjs.com/" target="blank">
-                    <h1 class='riot-h1'><span class='riot'>Riot.js</span></h1>
-                    </a>
-                    <p>Обзор еще одного UI фраймворка</p>
-                    
-                </section>
-                <section class='second'>
-                    
-                    <p class="quote">— У нас, когда долго бежишь, непременно попадаешь в другое место.</p>
-                    <p class="quote">— Ну, а здесь, знаешь ли, приходится бежать со всех ног, чтобы только остаться на том же месте, а чтобы попасть в другое место, нужно бежать вдвое быстрее.</p>
+                </div>
+            </section>
+            <section>
 
-                    <div class="quote-author">Алиса и Королева обсуждают Java-Script стек</div>
+                <h2>Генераторы в</h2>
+                <h3>java-script</h3>
+
+                <img id='gen' style='width:600px; border:0;box-shadow: 0 0 0;' src="generator.jpg" />
+
+            </section>
+            <!--                 <section class='second'>
+                    
+                    <p class="quote">Будь проще и люди к тебе потянутся</p>
+
+
+                    <div class="quote-author">TBD</div>
                     <img id="rabbit" src="rabbit.gif">
-                </section>
-   <!--              <section class='second' data-background="compare.png">
-                    <p ></p>
-
                 </section> -->
-                <section class='second'>
-                    <img id="clear-vm" src='compare-1.png'>
-                    <p ></p>
 
-                </section>
-                
-                <section data-state="customevent">
-
-					<pre style="font-size: 14px;">
-&lt;todo&gt;
-<div class="fragment highlight-green">
-  &lt;h3&gt;{ opts.title }&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li each={ item, i in items }&gt;{ item }&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;form onsubmit={ add }&gt;
-    &lt;input ref=&quot;input&quot;&gt;
-    &lt;button&gt;Add #{ items.length + 1 }&lt;/button&gt;
-  &lt;/form&gt;
-</div>
-<div class="fragment highlight-blue">
-  &lt;style&gt;
-    h3 {
-      font-size: 14px;
-    }
-  &lt;/style&gt;
-</div>
-<div class="fragment highlight-red">
-  &lt;script&gt;
-    this.items = []
-
-    add(e) {
-      e.preventDefault()
-      var input = this.refs.input
-      this.items.push(input.value)
-      input.value = ''
-    }
-  &lt;/script&gt;
-</div>
-&lt;/todo&gt;
-						</pre>
-
-				</section>
-        <section class='second'>
-                    
-                    <p ><img id="clear-dvm" src='dom-view-model.png'></p>
-
-        </section>
-
-				<section data-state="customevent">
-
-					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 25px; line-height: 100%;">
-riot.tag2('todo', 
-
-'&lt;h3&gt;{opts.title}&lt;/h3&gt; 
-&lt;ul&gt; &lt;li each=&quot;{item, i in items}&quot;&gt;{item}&lt;/li&gt; &lt;/ul&gt; 
-&lt;form onsubmit=&quot;{add}&quot;&gt; &lt;input ref=&quot;input&quot;&gt; 
-&lt;button&gt;Add #{items.length + 1}&lt;/button&gt; &lt;/form&gt;', 
-
-'todo h3,[data-is=&quot;todo&quot;] h3{ font-size: 14px; }', 
-'', 
-
-function(opts) {
-    this.items = []
-
-    this.add = function(e) {
-      e.preventDefault()
-      var input = this.refs.input
-      this.items.push(input.value)
-      input.value = ''
-    }.bind(this)
-});
-						</code></pre>
-
-				</section>
-								</section>
-				    <section data-state="customevent">
-					<p>
-						Монтирование тега
-					</p>
-					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 25px; line-height: 100%;">
-//somewhere in index.html
-
-&lt;todo&gt;&lt;/todo&gt;
-
-&lt;script&gt;riot.mount('todo')&lt;/script&gt;
-						</code></pre>
-
-				</section>
-				<section data-state="customevent">
-					<p>
-						События жизненного цикла компонента
-					</p>
-					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 17px; line-height: 100%;">
-&lt;todo&gt;
-
-  this.on('before-mount', function() {
-    // before the tag is mounted
-  })
-
-  this.on('mount', function() {
-    // right after the tag is mounted on the page
-  })
-
-  this.on('update', function() {
-    // allows recalculation of context data before the update
-  })
-
-  this.on('updated', function() {
-    // right after the tag template is updated after an update call
-  })
-
-  this.on('before-unmount', function() {
-    // before the tag is removed
-  })
-
-  this.on('unmount', function() {
-    // when the tag is removed from the page
-  })
-
-  // curious about all events ?
-  this.on('*', function(eventName) {
-    console.info(eventName)
-  })
-
-&lt;/todo&gt;
-						</code></pre>
-
-				</section>
-				<section data-state="customevent">
-					<p>
-						Обновление компонента
-					</p>
-					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 17px; line-height: 100%;">
-this.update()
-						</code></pre>
-
-				</section>
-				<section data-state="customevent">
-					<p>
-						Свойства компонента
-					</p>
-					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 17px; line-height: 100%;">
-&lt;script&gt;
-riot.mount('my-tag', { title: 'My TODO app', items: [ ... ] })
-&lt;/script&gt;
-
-//------------
-
-&lt;my-tag&gt;
-
-  &lt;!-- Options in HTML --&gt;
-  &lt;h3&gt;{ opts.title }&lt;/h3&gt;
-
-  // Options in JavaScript
-  var title = opts.title
-
-&lt;/my-tag&gt;
-						</code></pre>
-
-				</section>
-				<section data-state="customevent">
-					<p>
-						Html директивы
-					</p>
-          <br />
-          <br />
-          <ul>
-          <li>if</li>
-          <li>show/hide</li>
-          <li>each</li>
-          </ul>
-	
-
-				</section>
-        <section data-state="customevent">
-          <p>
-            Сборка
-          </p>
-          <br />
-          <br />
-          <ul>
-          <li>In-browser compilation</li>
-          <li>Pre-compilation</li>
-          </ul>
+            <section>
+                <p>Генераторы это особый тип функций которые позволяют выйти и войти в них в определенной точке исполнения
+                    обозначенной ключевым словом <b>yield</b> при этом сохраняется контекст исполения этой функции
+                </p>
+            </section>
 
 
-        </section>
-				<section data-state="customevent">
-					<p>
-						Пример класса для роутера
-					</p>
-					<pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 15px; line-height: 100%;">
-class Router{
-  constructor(mainSelector){
-    this.routes = [];
-    window.addEventListener("hashchange", () => {
-      this.routes.forEach(route=>{
-        if(location.hash.indexOf(route.hash)>=0){
-          riot.mount(mainSelector, route.tag)
-        }
-      })
-    })
-  }
+            <!--<section>
 
-  go(hash){
-    location.hash = hash
-  }
+                <p class="ciu_embed" data-feature="async-functions" data-periods="future_1,current,past_1">
+                    <a href="http://caniuse.com/#feat=async-functions&feature_sort=usr_score">Can I Use async-functions?</a>                    Data on support for the async-functions feature across the major browsers from caniuse.com.
+                </p>
 
-  register(route){
-    this.routes.push(route)
-  }
-}
-						</code></pre>
-
-				</section>
-        <section data-state="customevent">
-					<p>
-						Пример SPA приложения на Riot.js.
-					</p>
+            </section>-->
 
 
-				</section>
-        
-        <section data-state="customevent">
-
-          <img height="100%" style="margin-top: -52px;" src="alice.png"/>
-
-        </section>
-
-        <section data-state="customevent">
-          <p>
-            Спасибо за внимание!
-          </p>
-          <p>
-            <a href="https://mikhail-angelov.github.io/presentation-riot/#/">https://mikhail-angelov.github.io/presentation-riot/</a>
-            </p>
+            <section data-state="customevent">
+                <p>
+                    Спасибо за внимание!
+                </p>
+                <p>
+                    <a href="https://mikhail-angelov.github.io/presentation-generators/#/">https://mikhail-angelov.github.io/presentation-generators/</a>
+                </p>
 
 
-        </section>
-            </div>
+            </section>
         </div>
-        <script src="lib/js/head.min.js"></script>
-        <script src="js/reveal.js"></script>
-        <script>
-            Reveal.initialize({
-				history: true,
+    </div>
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script src="http://cdn.jsdelivr.net/caniuse-embed/1.0.1/caniuse-embed.min.js"></script>
+    <script>
+        Reveal.initialize({
+            history: true,
 
-				// More info https://github.com/hakimel/reveal.js#dependencies
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				],
-				width: 1000,
-			    height: 600,
+            // More info https://github.com/hakimel/reveal.js#dependencies
+            dependencies: [
+                { src: 'plugin/markdown/marked.js' },
+                { src: 'plugin/markdown/markdown.js' },
+                { src: 'plugin/notes/notes.js', async: true },
+                { src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+            ],
+            width: 1000,
+            height: 600,
 
-			    // Factor of the display size that should remain empty around the content
-			    margin: 0.1,
+            // Factor of the display size that should remain empty around the content
+            margin: 0.1,
 
-			    // Bounds for smallest/largest possible scale to apply to content
-			    minScale: 1.0,
-			    maxScale: 1.5
-			});
-        </script>
-    </body>
+            // Bounds for smallest/largest possible scale to apply to content
+            minScale: 1.0,
+            maxScale: 1.5
+        });
+    </script>
+</body>
+
 </html>
