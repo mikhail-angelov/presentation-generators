@@ -38,12 +38,106 @@
                 </section> -->
 
             <section>
+                <p>Так может выглядеть ассинхронный код на callback</p>
+                <pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
+function createUser(req, res){
+    checkParams(req.body, (err, result)=>{
+        if(err){
+            res.status(400).send(err)
+        }else{
+            createUser(req.body, (err, user)=>{
+                if(err){
+                    res.status(400).send(err)
+                }else if(user.isNew){
+                    sendWelomeMail(user, (err)=>{
+                        res.json(user)
+                    })
+                }else{
+                    res.json(user)
+                }
+            })
+        }
+    })
+}
+
+                </code></pre>
+            </section>
+            <section>
+                <p>Так может выглядеть ассинхронный код на promise</p>
+                <pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
+function createUser(req, res){
+    checkParams(req.body)
+        .then(()=>createUser(req.body))
+        .then(user=>{
+            if(user.isNew){
+                return sendWelomeMail(user)
+                    .then(()=>res.json(user))
+                })
+            }else{
+                res.json(user)
+            }
+        })
+        .catch(err=>res.status(400).send(err))
+}
+
+                </code></pre>
+            </section>
+            <section>
+                <p>Так может выглядеть ассинхронный код на generators</p>
+                <pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
+function createUser(req, res){
+    co(function*(){
+        yield checkParams(req.body)
+        const user = yield createUser(req.body)
+        if(user.isNew){
+            yield sendWelomeMail(user)
+        }
+        res.json(user)
+    }).catch(err=>res.status(400).send(err))
+}
+                </code></pre>
+            </section>
+
+            <section>
                 <p>Генераторы это особый тип функций которые позволяют выйти и войти в них в определенной точке исполнения
                     обозначенной ключевым словом <b>yield</b> при этом сохраняется контекст исполения этой функции
                 </p>
             </section>
 
+            <section>
+                <p>Управление последовательностью выполнения инструкций</p>
+                <pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
+function* gena(){
+    console.log('start generator') //3
+    yield 'hi'                     //4
+    console.log('next step')       //7
+}
+const g = gena(); //1
+var a = g.next(); //2 ... //5 a={ value: 'hi', done: false }
+a = g.next();     //6 ... //8 a={ value: undefined, done: true }
+                </code></pre>
+            </section>
+            <section>
+                <p>Наивная имплементация co</p>
+                <pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
+function co(generagtor) {
+    return new Promise((resolve, reject) => {
+        const gen = generagtor()
+        next(gen.next())
 
+        function next(response) {
+            if (response.done) {
+                resolve(response.value)
+            } else {
+                response.value
+                    .then(data => next(gen.next(data)))
+                    .catch(err=>reject(err))
+            }
+        }
+    })
+}
+                </code></pre>
+            </section>
             <!--<section>
 
                 <p class="ciu_embed" data-feature="async-functions" data-periods="future_1,current,past_1">
