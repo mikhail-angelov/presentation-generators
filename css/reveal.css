@@ -1391,3 +1391,11 @@ span.logo{
         border: 0px;
     box-shadow: 0 0 0;
 }
+
+.line.focus {
+    background: yellow;
+}
+.reveal .slides section code .fragment {
+       opacity: 1; 
+     visibility: visible; 
+}

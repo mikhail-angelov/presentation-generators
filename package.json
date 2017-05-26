@@ -4,13 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "true"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "lodash": "^4.16.1",
-    "riot": "^2.6.2"
+    "co": "^4.6.0",
+    "lodash": "^4.16.1"
+  },
+  "dependencies": {
+    "highlight": "^0.2.4",
+    "highlight.js": "^9.11.0",
+    "reveal-code-focus": "^1.0.0"
   }
 }

@@ -7,8 +7,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "ex1",
-            "program": "${workspaceRoot}/examples/example1.js"
+            "name": "ex3",
+            "program": "${workspaceRoot}/examples/example3.js"
         },
         {
             "name": "Launch file",

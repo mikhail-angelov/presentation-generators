@@ -1,15 +1,53 @@
 <html>
 
 <head>
+    <!--<link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css">
+
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="lib/css/zenburn.css">-->
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/white.css">
-    <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+      .reveal .slides section .fragment.current-only {
+        opacity: 1;
+        visibility: visible;
+        display: none;
+      }
+      .reveal .slides section .fragment.current-only.current-fragment {
+        display: block;
+      }
+      /* Solarized Light theme */
+      .line { display: block; }
+      .line.focus { background: yellow; color: #657b83; }
+      .line.focus .hljs-comment, .line.focus .hljs-quote { color: #93a1a1; }
+      .line.focus .hljs-keyword, .line.focus .hljs-selector-tag, .line.focus .hljs-addition { color: #859900; }
+      .line.focus .hljs-number, .line.focus .hljs-string, .line.focus .hljs-meta .hljs-meta-string, .line.focus .hljs-literal, .line.focus .hljs-doctag, .line.focus .hljs-regexp { color: #2aa198; }
+      .line.focus .hljs-title, .line.focus .hljs-section, .line.focus .hljs-name, .line.focus .hljs-selector-id, .line.focus .hljs-selector-class { color: #268bd2; }
+      .line.focus .hljs-attribute, .line.focus .hljs-attr, .line.focus .hljs-variable, .line.focus .hljs-template-variable, .line.focus .hljs-class .hljs-title, .line.focus .hljs-type { color: #b58900; }
+      .line.focus .hljs-symbol, .line.focus .hljs-bullet, .line.focus .hljs-subst, .line.focus .hljs-meta, .line.focus .hljs-meta .hljs-keyword, .line.focus .hljs-selector-attr, .line.focus .hljs-selector-pseudo, .line.focus .hljs-link { color: #cb4b16; }
+      .line.focus .hljs-built_in, .line.focus .hljs-deletion { color: #dc322f; }
+      .line.focus .hljs-formula { background: #eee8d5; }
+      .line.focus .hljs-emphasis { font-style: italic; }
+      .line.focus .hljs-strong { font-weight: bold; }
+      .yellow-slide .line.focus:nth-child(2) { background: yellow; }
+      .code-annotation {
+            font-weight: 800;
+            color: blue;
+            margin: 41px;
+        }
+    .reveal pre code {
+        max-height: 100%
+    }
+    </style>
 </head>
 
 <body>
     <div class="reveal">
-        <div class="slides">
+        <div class="slides" style="width: 100%;">
+
             <section>
                 <h3>@Mikhail.Angelov</h3>
                 <div>
@@ -23,10 +61,87 @@
             <section>
 
                 <h2>Генераторы в</h2>
-                <h3>java-script</h3>
+                <h3>JavaScript</h3>
 
                 <img id='gen' style='width:600px; border:0;box-shadow: 0 0 0;' src="generator.jpg" />
 
+            </section>
+            <section>
+
+                <h2><a href="https://wingolog.org/archives/2013/05/08/generators-in-v8">2010: SpiderMonkey</a></h2>
+                <h2><a href="https://blog.ometer.com/2010/11/28/a-sequential-actor-like-api-for-server-side-javascript/">2013: V8</a></h2>
+                <h2><a href="https://www.ecma-international.org/ecma-262/6.0/">2015: ES 2015</a></h2>
+                
+                
+            </section>
+            <section>
+                <p>Пример ассинхронной функции
+                <pre class="fragment roll-in" style="position: absolute; top: 0px;background: aliceblue;z-index: 10;">
+                    <code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
+function createUser(req, res){
+    checkParams(req.body, (err, result)=>{
+        if(err){
+            res.status(400).send(err)
+        }else{
+            createUser(req.body, (err, user)=>{
+                if(err){
+                    res.status(400).send(err)
+                }else if(user.isNew){
+                    sendWelсomeMail(user, (err)=>{
+                        res.json(user)
+                    })
+                }else{
+                    res.json(user)
+                }
+            })
+        }
+    })
+}
+
+                </code>
+                </pre>
+                <pre class="fragment roll-in" style="position: absolute; top: 80px; left:40px; background: antiquewhite;z-index: 11;">
+                    <code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
+function createUser(req, res){
+    checkParams(req.body)
+        .then(()=>createUser(req.body))
+        .then(user=>{
+            if(user.isNew){
+                return sendWelсomeMail(user)
+                    .then(()=>res.json(user))
+                })
+            }else{
+                res.json(user)
+            }
+        })
+        .catch(err=>res.status(400).send(err))
+}
+                </code></pre>
+                <pre class="fragment roll-in" style="position: absolute; top: 120px; left:80px; background: honeydew;z-index: 12;">
+                    <code data-trim="" data-noescape="" class="javascript" style="max-height: 400px; font-size: 20px; line-height: 100%;">
+function createUser(req, res){
+    co(function*(){
+        yield checkParams(req.body)
+        const user = yield createUser(req.body)
+        if(user.isNew){
+            yield sendWelсomeMail(user)
+        }
+        res.json(user)
+    }).catch(err=>res.status(400).send(err))
+}
+                </code></pre>
+                <pre class="fragment roll-in" style="position: absolute; top: 130px; left:120px; background: antiquewhite;z-index: 12;">
+                    <code data-trim="" data-noescape="" class="javascript" style="max-height: 400px; font-size: 20px; line-height: 100%;">
+async function createUser(req, res){
+    await checkParams(req.body)
+    const user = await createUser(req.body)
+    if(user.isNew){
+        await sendWelсomeMail(user)
+    }
+    res.json(user)
+    }).catch(err=>res.status(400).send(err))
+}
+                </code></pre>
             </section>
             <!--                 <section class='second'>
                     
@@ -38,105 +153,159 @@
                 </section> -->
 
             <section>
-                <p>Так может выглядеть ассинхронный код на callback</p>
-                <pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
-function createUser(req, res){
-    checkParams(req.body, (err, result)=>{
-        if(err){
-            res.status(400).send(err)
-        }else{
-            createUser(req.body, (err, user)=>{
-                if(err){
-                    res.status(400).send(err)
-                }else if(user.isNew){
-                    sendWelomeMail(user, (err)=>{
-                        res.json(user)
-                    })
-                }else{
-                    res.json(user)
-                }
-            })
-        }
-    })
-}
-
-                </code></pre>
-            </section>
-            <section>
-                <p>Так может выглядеть ассинхронный код на promise</p>
-                <pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
-function createUser(req, res){
-    checkParams(req.body)
-        .then(()=>createUser(req.body))
-        .then(user=>{
-            if(user.isNew){
-                return sendWelomeMail(user)
-                    .then(()=>res.json(user))
-                })
-            }else{
-                res.json(user)
-            }
-        })
-        .catch(err=>res.status(400).send(err))
-}
-
-                </code></pre>
-            </section>
-            <section>
-                <p>Так может выглядеть ассинхронный код на generators</p>
-                <pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
-function createUser(req, res){
-    co(function*(){
-        yield checkParams(req.body)
-        const user = yield createUser(req.body)
-        if(user.isNew){
-            yield sendWelomeMail(user)
-        }
-        res.json(user)
-    }).catch(err=>res.status(400).send(err))
-}
-                </code></pre>
-            </section>
-
-            <section>
-                <p>Генераторы это особый тип функций которые позволяют выйти и войти в них в определенной точке исполнения
+                <p style="font-size: larger;">Генераторы это особый тип функций которые позволяют выйти и войти в них в определенной точке исполнения
                     обозначенной ключевым словом <b>yield</b> при этом сохраняется контекст исполения этой функции
                 </p>
             </section>
-
             <section>
-                <p>Управление последовательностью выполнения инструкций</p>
-                <pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
-function* gena(){
-    console.log('start generator') //3
-    yield 'hi'                     //4
-    console.log('next step')       //7
-}
-const g = gena(); //1
-var a = g.next(); //2 ... //5 a={ value: 'hi', done: false }
-a = g.next();     //6 ... //8 a={ value: undefined, done: true }
-                </code></pre>
+            <section data-markdown><script type="text/template">
+            #### Управление последовательностью выполнения инструкций
+            </script>
+            </section>
+            <section data-markdown><script type="text/template">
+            #### Пример генератора
+            ```js
+            function* gena(val){
+                console.log('start generator')
+                const value = yield 'ping'
+                return 'done'  
+            }
+
+            const g = gena('start')
+            const res1 = g.next()
+            const res2 = g.next('pong')
+            ```
+            <span class="fragment current-only code-annotation" data-code-focus="7">Создадим генератор</span>
+            <span class="fragment current-only code-annotation" data-code-focus="8">Запустим генератор</span>
+            <span class="fragment current-only code-annotation" data-code-focus="2-3">Генератор работает до `yield`</span>
+            <span class="fragment current-only code-annotation" data-code-focus="8">res1 == { value: 'ping', done: false }</span>
+            <span class="fragment current-only code-annotation" data-code-focus="9">Запускаем следующую итерацию</span>
+            <span class="fragment current-only code-annotation" data-code-focus="3-4">value == 'pong'</span>
+            <span class="fragment current-only code-annotation" data-code-focus="9">res2 == { value: 'done', done: true }</span>
+            </script></section>
             </section>
             <section>
-                <p>Наивная имплементация co</p>
-                <pre><code data-trim="" data-noescape="" class="javascript" style="max-height: 600px; font-size: 20px; line-height: 100%;">
+                <p>Диагрмма последоваетельности</p>
+                <img id='gen' style='width:800px; border:0;box-shadow: 0 0 0;' src="gen-diagram.svg" />
+            </section>
+            <section>
+            <section data-markdown><script type="text/template">
+            #### Наивная реализация библиотеки co
+            </script>
+            </section>
+            <section data-markdown style="margin-top: -87px;"><script type="text/template">
+                ```js
 function co(generagtor) {
-    return new Promise((resolve, reject) => {
-        const gen = generagtor()
-        next(gen.next())
-
-        function next(response) {
-            if (response.done) {
-                resolve(response.value)
-            } else {
-                response.value
-                    .then(data => next(gen.next(data)))
-                    .catch(err=>reject(err))
+  return new Promise((resolve, reject) => {
+    const gen = generagtor()
+    next(gen.next())
+    function next(response) {
+      if (response.done) {
+        resolve(response.value)
+      } else {
+        response.value
+          .then(data => {
+            return next(gen.next(data))
+          })
+          .catch(err => {
+            try {
+              next(gen.throw(err))
+            } catch (e) {
+              reject(e)
             }
+          })
+      }
+    }
+  })
+}   
+                ```
+                <span class="fragment current-only code-annotation" data-code-focus="1">генератор как аргумент</span>
+                <span class="fragment current-only code-annotation" data-code-focus="2">возвращаем промис</span>
+                <span class="fragment current-only code-annotation" data-code-focus="3-4">создаем генератор и рекурсивно решаем промисы</span>
+                <span class="fragment current-only code-annotation" data-code-focus="6-7">если генератор окончен то разрешаем верхний промис</span>
+                <span class="fragment current-only code-annotation" data-code-focus="9-12">если нет то решаем переданный промис и запускаем следующую итерацию генератора</span>
+                <span class="fragment current-only code-annotation" data-code-focus="15">в случае ошибки кидаем исключение</span>
+                <span class="fragment current-only code-annotation" data-code-focus="17">если исключение то режектим верхний промис</span>
+            </script>
+            </section>
+            </section>
+            <section>
+                <p>Диагрмма последоваетельности</p>
+                <img id='gen' style='width:800px; border:0;box-shadow: 0 0 0;' src="co-diagram.svg" />
+            </section>
+            <section>
+                <section>
+                    <p>Обработка ошибок</p>
+                </section>
+                <section data-markdown style="margin-top: -87px;"><script type="text/template">
+                ```js
+function createUser(req, res){
+    co(function*(){
+        try{
+            yield checkParams(req.body)
+            const user = yield createUser(req.body)
+            if(user.isNew){
+                yield sendWelсomeMail(user)
+            }
+            res.json(user)
+        } catch(err) {
+            res.status(400).send(err)
         }
     })
 }
-                </code></pre>
+                ```
+                <span class="fragment current-only code-annotation" data-code-focus="3,10,12"></span>
+                <span class="fragment current-only code-annotation" data-code-focus="10"></span>
+              </script></section>
+            </section>
+            <section>
+                <p>Где это работает</p>
+                <ul>
+                    <li style="color:green">Chrome 39+</li>
+                    <li style="color:green"> Firefox 27+</li>
+                    <li style="color:green">Edge 13+</li>
+                    <li style="color:green">Opera 26+</li>
+                    <li style="color:green">Safari 10+</li>
+                    <li style="color:green">Node.js 4+</li>
+                    <li style="color:red">IE -</li>
+                </ul>
+            </section>
+            <section>
+                <section>
+                    <p>Логическое продолжение работы с ассинхронными методами</p>
+                    <p>async/await</p>
+                </section>
+                <section data-markdown style="margin-top: -87px;"><script type="text/template">
+                #### Пример кода
+                ```js
+async function create(body){
+        await checkParams(body)
+        const user = await createUser(body)
+        if(user.isNew){
+            await sendWelсomeMail(user)
+        }
+        return user
+}
+function createUser(req, res){
+    create(req.body)
+        .then(user=>res.json(user))
+        .catch(err=>res.status(400).send(err))
+}
+                ```
+                <span class="fragment current-only code-annotation" data-code-focus="1"></span>
+              </script>
+                <section>
+                <p>Поддержка async/await</p>
+                <ul>
+                    <li style="color:green">Chrome 55+</li>
+                    <li style="color:green"> Firefox 52+</li>
+                    <li style="color:green">Edge 15+</li>
+                    <li style="color:green">Opera 42+</li>
+                    <li style="color:green">Safari 10.1+</li>
+                    <li style="color:green">Node.js 7+</li>
+                    <li style="color:red">IE -</li>
+                </ul>
+            </section>
             </section>
             <!--<section>
 
@@ -171,10 +340,13 @@ function co(generagtor) {
                 { src: 'plugin/markdown/marked.js' },
                 { src: 'plugin/markdown/markdown.js' },
                 { src: 'plugin/notes/notes.js', async: true },
-                { src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+                // { src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+
+                { src: 'node_modules/highlight/lib/vendor/highlight.js/highlight.pack.js' },
+                { src: 'reveal-code-focus.js', callback: function() { RevealCodeFocus(); } }
             ],
-            width: 1000,
-            height: 600,
+            width: 1200,
+            // height: 600,
 
             // Factor of the display size that should remain empty around the content
             margin: 0.1,
