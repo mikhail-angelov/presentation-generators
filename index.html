@@ -356,7 +356,7 @@ function createUser(req, res){
                 { src: 'plugin/notes/notes.js', async: true },
                 // { src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
 
-                { src: 'node_modules/highlight/lib/vendor/highlight.js/highlight.pack.js' },
+                { src: 'plugin/highlight.pack.js' },
                 { src: 'reveal-code-focus.js', callback: function() { RevealCodeFocus(); } }
             ],
             width: 1200,
