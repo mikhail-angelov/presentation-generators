@@ -122,7 +122,7 @@ function createUser(req, res){
         .catch(err=>res.status(400).send(err))
 }
                 </code></pre>
-                <pre class="fragment roll-in" style="position: absolute; top: 120px; left:80px; background: honeydew;z-index: 12;">
+                <pre class="fragment roll-in" style="position: absolute; top: 120px; left:80px; background: aquamarine;z-index: 12;">
                     <code data-trim="" data-noescape="" class="javascript code-sample">
 function createUser(req, res){
     co(function*(){
@@ -135,7 +135,7 @@ function createUser(req, res){
     }).catch(err=>res.status(400).send(err))
 }
                 </code></pre>
-                <pre class="fragment roll-in" style="position: absolute; top: 130px; left:120px; background: antiquewhite;z-index: 12;">
+                <pre class="fragment roll-in" style="position: absolute; top: 130px; left:120px; background: coral;z-index: 12;">
                     <code data-trim="" data-noescape="" class="javascript code-sample">
 async function createUser(req, res){
     await checkParams(req.body)
@@ -194,6 +194,12 @@ createUser(req, res).catch(err=>res.status(400).send(err))
                 <img id='gen' style='width:800px; border:0;box-shadow: 0 0 0;' src="gen-diagram.svg" />
             </section>
             <section>
+                <img id='gen' style='width:800px; border:0;box-shadow: 0 0 0;' src="neo.jpg" />
+                <p>Нет никакой синхронности в JS</p>
+            
+            </section>
+            
+            <section>
             <section data-markdown><script type="text/template">
             #### Наивная реализация библиотеки 
             ## co
@@ -235,10 +241,10 @@ function co(generagtor) {
             </script>
             </section>
             </section>
-            <section>
+            <!--<section>
                 <p>Диаграмма последовательности</p>
                 <img id='gen' style='width:800px; border:0;box-shadow: 0 0 0;' src="co-diagram.svg" />
-            </section>
+            </section>-->
             <section>
                 <section>
                     <p>Обработка ошибок</p>
